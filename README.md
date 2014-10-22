@@ -1,5 +1,7 @@
 # Magento Dummy Installers
 
+Integrate with http://api.randomuser.me/
+
 Scripts to easily create a category tree and some dummy products in Magento.
 Although well tested on several production projects please be careful that this
 is still in BETA.
@@ -9,6 +11,7 @@ and the names in Magento and the file match
 
 Author: 
 - Sander Mangel <sander@sandermangel.nl>
+- Dmitry Schegolihin <d.shegolihin@gmail.com>
 
 Roadmap:
 - Create a Magento extension out of the loose importer files
