@@ -10,10 +10,10 @@ Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
 
 
 // input values
-define('CATEGORY_ID', 4);
+define('CATEGORY_ID', 219);
 define('PRODUCT_QTY', 15);
-define('IMAGES_PER_PRODUCT', 1);
-define('LIPSUM_API', 'http://json-lipsum.appspot.com/?amount=%d&what=bytes&start=no');
+define('IMAGES_PER_PRODUCT', 3);
+define('LIPSUM_API', 'http://api.randomuser.me/');
 define('IMAGE_API', 'http://lorempixel.com/700/700/technics/');
 
 // make an array with all websites
@@ -24,16 +24,21 @@ foreach (Mage::app()->getWebsites() as $website)
 
 for ($i = 0; $i < PRODUCT_QTY; $i++)
 {
-	$dummy_text 		= json_decode(file_get_contents(sprintf(LIPSUM_API, 500+$i)), true);
-	$dummy_title 		= substr($dummy_text['lipsum'], 0, 30); 
-	$dummy_shortdescr 	= substr($dummy_text['lipsum'], 31, 220); 
-	$dummy_descr 		= substr($dummy_text['lipsum'], 221); 
-	$dummy_sku 			= substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 10); 
+	
+	$dummy_text = json_decode(file_get_contents(LIPSUM_API), true);			
+	
+	$rand_txt = $dummy_text['results'][0]['user']['username'];
+	
+	$dummy_title 		= $rand_txt;
+	$dummy_shortdescr 	= $rand_txt;
+	$dummy_descr 		= $rand_txt;
+	$dummy_sku 			= substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 10); 		
+	//echo $dummy_sku;
 	
 	$rand_price 		= rand(10, 999);
 	$cost_price 		= rand(10, ($rand_price/2));
 	$special_price 		= rand($cost_price, ($rand_price/2));
-	
+		
 	
 	$product = Mage::getModel('catalog/product');
 	$product->setData(array(
@@ -65,8 +70,9 @@ for ($i = 0; $i < PRODUCT_QTY; $i++)
 		'manage_stock' => 1,
 	)); 
 	
+	
 	try {
-		$product->save();
+		$product->save();		
 	} catch (Exception $e) {
 		echo "ERROR: {$e}\n";
 		die();
