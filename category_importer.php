@@ -10,8 +10,9 @@ Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
 
 
 // open the tree file
-if (!$handle = fopen("treefile-category.txt", "r"))
+if (!$handle = fopen("treefile-category.txt", "r")) {
 	die('Failed to open file');
+}
 
 
 // process tree
@@ -19,7 +20,7 @@ $last_offsets = 0;
 $last_item_per_offset = array();
 while (($line = fgets($handle)) !== false) 
 {
-	$offset = strlen(substr($line, 0, strpos($line,'-')));
+	$offset = strlen(substr($line, 0, strpos($line, '-')));
 	$cat_name = trim(substr($line, $offset+1));
 	
 	$category_collection = Mage::getModel('catalog/category')->getCollection()
@@ -43,7 +44,7 @@ while (($line = fgets($handle)) !== false)
 		{
 			echo "ERROR: root category not found. Please create the root\n";
 		}
-		else if(!isset($last_item_per_offset[$offset-1])) // no parent found. something must be wrong in the file
+		else if (!isset($last_item_per_offset[$offset-1])) // no parent found. something must be wrong in the file
 		{
 			echo "ERROR: parent item does not exist. Please check your tree file\n";
 		}
@@ -65,7 +66,7 @@ while (($line = fgets($handle)) !== false)
 		 
 		try {
 			$category->save();
-		} catch (Exception $e){
+		} catch (Exception $e) {
 			echo "ERROR: {$e->getMessage()}\n";
 			die();
 		}
