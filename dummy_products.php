@@ -18,8 +18,9 @@ define('IMAGE_API', 'http://lorempixel.com/700/700/technics/');
 
 // make an array with all websites
 $website_ids = array();
-foreach (Mage::app()->getWebsites() as $website)
+foreach (Mage::app()->getWebsites() as $website) {
 	$website_ids[] = $website->getId();
+}
 
 
 for ($i = 0; $i < PRODUCT_QTY; $i++)
@@ -30,14 +31,14 @@ for ($i = 0; $i < PRODUCT_QTY; $i++)
 	$rand_txt = $dummy_text['results'][0]['user']['username'];
 	
 	$dummy_title 		= $rand_txt;
-	$dummy_shortdescr 	= $rand_txt;
+	$dummy_shortdescr = $rand_txt;
 	$dummy_descr 		= $rand_txt;
 	$dummy_sku 			= substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 10); 		
 	//echo $dummy_sku;
 	
 	$rand_price 		= rand(10, 999);
-	$cost_price 		= rand(10, ($rand_price/2));
-	$special_price 		= rand($cost_price, ($rand_price/2));
+	$cost_price 		= rand(10, ($rand_price / 2));
+	$special_price = rand($cost_price, ($rand_price / 2));
 		
 	
 	$product = Mage::getModel('catalog/product');
@@ -48,7 +49,7 @@ for ($i = 0; $i < PRODUCT_QTY; $i++)
 		'description'		=> $dummy_descr,
 		'price'				=> number_format($rand_price / 10, 2, '.', ''),
 		'cost'				=> number_format($cost_price / 10, 2, '.', ''),
-		'weight'			=> number_format(rand(1,10), 2, '.',''),
+		'weight'			=> number_format(rand(1, 10), 2, '.', ''),
 		'status'			=> Mage_Catalog_Model_Product_Status::STATUS_ENABLED,
 		'visibility'		=> Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
 		'type_id'			=> Mage_Catalog_Model_Product_Type::TYPE_SIMPLE,
@@ -59,7 +60,7 @@ for ($i = 0; $i < PRODUCT_QTY; $i++)
 	));
 	
 	
-	if ($i%4 == 0) // give some products a special price
+	if ($i % 4 == 0) // give some products a special price
 	{
 		$product->setSpecialPrice(number_format($special_price / 10, 2, '.', ''));
 	}
@@ -85,14 +86,14 @@ for ($i = 0; $i < PRODUCT_QTY; $i++)
 	for ($j = 0; $j < IMAGES_PER_PRODUCT; $j++)
 	{
 		// download and save file
-		$image_source 	= file_get_contents(IMAGE_API);
-		$image_name 	= dirname(__FILE__)."/tmpimage/{$dummy_sku}}_{$j}.jpg";
-		file_put_contents($image_name , $image_source);
+		$image_source = file_get_contents(IMAGE_API);
+		$image_name = dirname(__FILE__)."/tmpimage/{$dummy_sku}}_{$j}.jpg";
+		file_put_contents($image_name, $image_source);
 		chmod($image_source, 0777);
 		
 		try {
-			$product->addImageToMediaGallery($image_name , ($j==0) ? array( 'thumbnail', 'small_image', 'image' ) : null, true, false );
-		} catch (Exception $e){
+			$product->addImageToMediaGallery($image_name, ($j == 0) ? array('thumbnail', 'small_image', 'image') : null, true, false);
+		} catch (Exception $e) {
 			echo "ERROR: {$e}\n";
 		}
 		
